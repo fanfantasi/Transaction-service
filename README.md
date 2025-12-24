@@ -9,7 +9,7 @@ Interview Project : High-Reliability Transaction Service
 # Run Apps
 - Dev (npm run start:dev)
 - Build for Production (npm run build -> npm run start)
-- Documentation API ([Postman](https://jhc777.postman.co/workspace/JHC-Workspace~68776dfb-8841-400d-9a80-4fe4f0f833e3/collection/1658865-c3baabe9-0756-4340-96ad-2ded063a271b?action=share&creator=1658865))
+- Documentation API ([Postman](https://github.com/fanfantasi/Transaction-service/blob/Master/API%20documentation.postman_collection.json))
 
 
 1. Deskripsi Sistem
