@@ -4,7 +4,7 @@ Interview Project : High-Reliability Transaction Service
 # Techonology
 - Node Js v22.12.0
 - Express Js
-- PostgreeSQL (File Scema Terlampir)
+- PostgreeSQL ([Scema SQL](https://github.com/fanfantasi/Transaction-service/blob/Master/Scema%20SQL))
 
 # Run Apps
 - Dev (npm run start:dev)
