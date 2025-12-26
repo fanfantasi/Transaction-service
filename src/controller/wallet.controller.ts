@@ -125,6 +125,7 @@ export const walletController = {
 
     async spendWallet(req: Request, res: Response) {
         const { amount, referenceId } = req.body;
+        const userId = req.body?.payload.userId;
         const client = await getClient();
         if (typeof amount !== 'number' || isNaN(amount)) {
             return responseData.resBadRequest(res, 'Invalid amount type');
@@ -148,15 +149,21 @@ export const walletController = {
         try {
             await client.query('BEGIN');
 
-            const { rows: userRows } = await client.query<{ wallet_id: string }>(
-                'SELECT wallet_id FROM users WHERE id = $1',
-                [req.body.payload.userId]
+            const { rows: userRows } = await client.query(
+                `
+                SELECT id, balance
+                FROM wallets
+                WHERE user_id = $1
+                FOR UPDATE
+                `,
+                [userId]
             );
 
             if (userRows.length === 0) {
-                return res.status(404).json({ message: 'User tidak ditemukan' });
+                return responseData.resBadRequest(res, 'Wallet not found');
             }
-            const walletId = userRows[0].wallet_id;
+
+            const walletId = userRows[0].id;
 
             const { rows } = await client.query<{ balance: number }>(
                 'SELECT balance FROM wallets WHERE id = $1 FOR UPDATE',
@@ -194,7 +201,7 @@ export const walletController = {
             })
         } catch (err: any) {
             await client.query('ROLLBACK');
-            return responseData.resBadRequest(res, `Spend wallet unsuccessfully.`);
+            return responseData.resBadRequest(res, err.message || 'Spend wallet unsuccessfully.');
         } finally {
             client.release();
         }
@@ -202,6 +209,7 @@ export const walletController = {
 
     async withdrawWallet(req: Request, res: Response) {
         const { amount, referenceId } = req.body;
+        const userId = req.body?.payload.userId;
         const client = await getClient();
         if (typeof amount !== 'number' || isNaN(amount)) {
             return responseData.resBadRequest(res, 'Invalid amount type');
@@ -225,15 +233,21 @@ export const walletController = {
 
             await client.query('BEGIN');
 
-            const { rows: userRows } = await client.query<{ wallet_id: string }>(
-                'SELECT wallet_id FROM users WHERE id = $1',
-                [req.body.payload.userId]
+            const { rows: userRows } = await client.query(
+                `
+                SELECT id, balance
+                FROM wallets
+                WHERE user_id = $1
+                FOR UPDATE
+                `,
+                [userId]
             );
 
             if (userRows.length === 0) {
-                return res.status(404).json({ message: 'User tidak ditemukan' });
+                return responseData.resBadRequest(res, 'Wallet not found');
             }
-            const walletId = userRows[0].wallet_id;
+
+            const walletId = userRows[0].id;
             
             const { rows } = await client.query<{ balance: number }>(
                 'SELECT balance FROM wallets WHERE id = $1 FOR UPDATE',
