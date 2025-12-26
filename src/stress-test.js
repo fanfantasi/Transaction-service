@@ -19,7 +19,7 @@ async function testConcurrentSpend() {
             Authorization: TOKEN,
             'Content-Type': 'application/json'
           },
-          validateStatus: () => true // supaya axios tidak throw error
+          validateStatus: () => true
         }
       )
     );
