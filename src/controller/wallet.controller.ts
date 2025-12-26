@@ -75,7 +75,7 @@ export const walletController = {
             );
 
             if (rows.length === 0) {
-                return responseData.resBadRequest(res, 'Wallet not found');
+                throw new Error('Wallet not found');
             }
 
             const walletId = rows[0].id;
@@ -160,7 +160,8 @@ export const walletController = {
             );
 
             if (userRows.length === 0) {
-                return responseData.resBadRequest(res, 'Wallet not found');
+                throw new Error('Wallet not found');
+
             }
 
             const walletId = userRows[0].id;
@@ -171,10 +172,10 @@ export const walletController = {
             );
             
             if (rows.length === 0) {
-                return responseData.resBadRequest(res, `Wallet not found`);
+                throw new Error('Wallet not found');
             }
             if (rows[0].balance < amount) {
-                return responseData.resBadRequest(res, `Insufficient balance`);
+                throw new Error('Insufficient balance');
             }
 
             const result = await client.query<{ balance: number }>(
@@ -244,7 +245,7 @@ export const walletController = {
             );
 
             if (userRows.length === 0) {
-                return responseData.resBadRequest(res, 'Wallet not found');
+                throw new Error('Wallet not found');
             }
 
             const walletId = userRows[0].id;
@@ -255,10 +256,10 @@ export const walletController = {
             );
 
             if (rows.length === 0) {
-                return responseData.resBadRequest(res, `Wallet not found`);
+                throw new Error('Wallet not found');
             }
             if (rows[0].balance < amount) {
-                return responseData.resBadRequest(res, `Insufficient balance`);
+                throw new Error('Insufficient balance');
             }
 
             const result = await client.query<{ balance: number }>(

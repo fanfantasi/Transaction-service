@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start:dev": "TZ='Asia/Jakarta' ts-node-dev --respawn --transpile-only --exit-child src/server.ts",
+    "stress:test": "node src/stress-test.js",
     "build": "tsc",
     "start": "node ./build/server.js"
   },
